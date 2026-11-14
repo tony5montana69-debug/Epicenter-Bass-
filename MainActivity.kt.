@@ -1,0 +1,96 @@
+
+package com.epicenter.bass
+
+import android.app.Activity
+import android.os.Bundle
+import android.graphics.Color
+import android.view.Gravity
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.SeekBar
+
+class MainActivity : Activity() {
+
+    private val blue = Color.rgb(0, 180, 255)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        window.statusBarColor = Color.BLACK
+        window.navigationBarColor = Color.BLACK
+
+        val layout = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = Gravity.CENTER
+            setPadding(28, 35, 28, 25)
+            setBackgroundColor(Color.rgb(5, 7, 15))
+        }
+
+        fun title(text: String, size: Float, color: Int) {
+            layout.addView(TextView(this).apply {
+                this.text = text
+                textSize = size
+                setTextColor(color)
+                gravity = Gravity.CENTER
+                setPadding(0, 12, 0, 12)
+            })
+        }
+
+        title("EPICENTER", 34f, blue)
+        title("BASS BOOST", 22f, Color.WHITE)
+        title("POTENCIA DE BAJOS", 15f, blue)
+
+        val bassValue = TextView(this).apply {
+            text = "BAJOS: 50%"
+            textSize = 18f
+            setTextColor(Color.WHITE)
+            gravity = Gravity.CENTER
+        }
+        layout.addView(bassValue)
+
+        val bass = SeekBar(this).apply {
+            max = 100
+            progress = 50
+        }
+        bass.progressTintList =
+            android.content.res.ColorStateList.valueOf(blue)
+        bass.thumbTintList =
+            android.content.res.ColorStateList.valueOf(blue)
+
+        bass.setOnSeekBarChangeListener(
+            object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(
+                    seekBar: SeekBar?, value: Int, fromUser: Boolean
+                ) {
+                    bassValue.text = "BAJOS: $value%"
+                }
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+            }
+        )
+        layout.addView(bass)
+
+        title("ECUALIZADOR", 22f, blue)
+
+        val bands = listOf(
+            "SUBGRAVES", "GRAVES", "MEDIOS", "AGUDOS"
+        )
+
+        for (band in bands) {
+            title(band, 15f, Color.WHITE)
+            val slider = SeekBar(this).apply {
+                max = 100
+                progress = 50
+                progressTintList =
+                    android.content.res.ColorStateList.valueOf(blue)
+                thumbTintList =
+                    android.content.res.ColorStateList.valueOf(blue)
+            }
+            layout.addView(slider)
+        }
+
+        title("EPICENTER-BASS", 13f, blue)
+
+        setContentView(layout)
+    }
+}
