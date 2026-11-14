@@ -40,7 +40,11 @@ class MusicPlayer {
             (value.coerceIn(0, 100) * 10)
         )
     }
-
+fun pause() {
+    if (player?.isPlaying == true) {
+        player?.pause()
+    }
+}
     fun stop() {
         audioEngine?.release()
         audioEngine = null
